@@ -151,6 +151,6 @@ while True:
         wks_jp_import.add_rows(true_sales_data.shape[0])
 
         wks_jp_import.set_dataframe(true_sales_data, start=f"A{wks_jp_import_last_row}", copy_head=False, extend=True)
-
+        print("Đã ghi")
     finally:
         time.sleep(5)
