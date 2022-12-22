@@ -2,7 +2,7 @@
 import functools
 import warnings
 warnings.filterwarnings('ignore')
-import time
+import tim
 import pygsheets
 from IPython.display import Image, HTML
 #%% import data from Sales Database
