@@ -22,6 +22,7 @@ while True:
         sales_db_df = sales_db_df[['product_id', 'date', 'phone_number', 'transport',
                                    'product_name', 'product_link', 'product_image',
                                    'exchange_rate', 'purchase_fee']].copy()
+        # Feedback2
         existed_product_id = wks_jp_import.get_as_df(has_header=False)[1]
         true_sales_data = sales_db_df.loc[(~sales_db_df['product_id'].isin(existed_product_id))].copy()
         print("Lấy dữ liệu lần đầu")
