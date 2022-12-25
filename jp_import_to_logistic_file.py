@@ -4,7 +4,6 @@ import pandas as pd
 warnings.filterwarnings('ignore')
 import time
 import pygsheets
-from IPython.display import Image, HTML
 
 #%% Kết nối với file Logistic Hub và  Japan Import
 gc = pygsheets.authorize(service_file=r'Data\potent-orbit-371709-b58aa2a0a71c.json')
@@ -19,20 +18,19 @@ while True:
     try:
         print("Đang lấy dữ liệu từ file jp_import")
         jp_import_df = wks_jp_import.get_as_df(has_header=True)
+        #Lấy những cột cần thiết
         jp_import_df_copy = jp_import_df[['tracking_id', 'product_id', 'product_name', 'product_image_link',
                                           'jp_date_received']].copy()
-
+        #Lọc ra những dữ liệu đã được lấy trước đó
         existed_product_id = wks_logistic_hub.get_as_df(has_header=False)[3]
         true_logistic_data = jp_import_df_copy.loc[(~jp_import_df_copy['product_id'].isin(existed_product_id))].copy()
-
         print("Đã lấy được dữ liệu từ jp_import lần 1")
-        print("Lấy order lần 1")
 
         if true_logistic_data.shape[0] == 0:
             print('Không có dữ liệu nào mới')
             nm + 1
         else:
-            print("Chờ 5s lỡ đâu tích nhầm")
+            print("Chờ 5s trong trường hợp tích nhầm")
             time.sleep(5)
             jp_import_df = wks_jp_import.get_as_df(has_header=True)
             jp_import_df_copy = jp_import_df[['tracking_id', 'product_id', 'product_name', 'product_image_link',
@@ -41,7 +39,7 @@ while True:
             true_logistic_data = jp_import_df_copy.loc[
                 (~jp_import_df_copy['product_id'].isin(existed_product_id))].copy()
         print("Đã lấy được dữ liệu từ jp_import")
-        # Lấy hình ảnh tư jp_import
+        # Lấy hình ảnh từ jp_import
         product_image = []
         image_link = true_logistic_data['product_image_link']
         for i in image_link:
@@ -67,19 +65,15 @@ while True:
 
         wks_logistic_hub.set_dataframe(true_logistic_data, start=f"A{wks_logistic_hub_last_row}", copy_head=False,
                                        extend=True)
-        logistic_hub_df = wks_logistic_hub.get_as_df(has_header=True)
 
     except NameError:
         print("Đang lấy dữ liệu từ file jp_import")
         jp_import_df = wks_jp_import.get_as_df(has_header=True)
         jp_import_df_copy = jp_import_df[['tracking_id', 'product_id', 'product_name', 'product_image_link',
                                           'jp_date_received']].copy()
-
         existed_product_id = wks_logistic_hub.get_as_df(has_header=False)[3]
         true_logistic_data = jp_import_df_copy.loc[(~jp_import_df_copy['product_id'].isin(existed_product_id))].copy()
-
         print("Đã lấy được dữ liệu từ jp_import lần 1")
-        print("Lấy order lần 1")
 
         if true_logistic_data.shape[0] == 0:
             print('Không có dữ liệu nào mới')
@@ -120,6 +114,5 @@ while True:
 
         wks_logistic_hub.set_dataframe(true_logistic_data, start=f"A{wks_logistic_hub_last_row}", copy_head=False,
                                        extend=True)
-        logistic_hub_df = wks_logistic_hub.get_as_df(has_header=True)
     finally:
         time.sleep(5)
