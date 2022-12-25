@@ -16,6 +16,7 @@ wks_jp_import=sh_jp_import.worksheet_by_title('jp_import')
 while True:
     try:
         print("Đang lấy dữ liệu từ sales database")
+        # Chỗ này em chưa hiểu nè chị
         sales_db_df = wks_sales_db.get_as_df(has_header=False)
         sales_db_df.columns = wks_sales_db.get_row(1)
         sales_db_df = sales_db_df[['product_id', 'date', 'phone_number', 'transport',
