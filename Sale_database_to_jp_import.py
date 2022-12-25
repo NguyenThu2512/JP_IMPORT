@@ -1,4 +1,4 @@
-#%% nhập thư viện%Việt test
+#%% nhập thư viện%Việt
 import warnings
 warnings.filterwarnings('ignore')
 import time
