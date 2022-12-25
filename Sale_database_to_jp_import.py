@@ -31,6 +31,7 @@ while True:
             print('Không có dữ liệu được thêm mới')
             nm + 1
         else:
+            #Feedback3
             print("Chờ 5s trong trường hợp tích nhầm")
             time.sleep(5)
             sales_db_df = wks_sales_db.get_as_df(has_header=False)
