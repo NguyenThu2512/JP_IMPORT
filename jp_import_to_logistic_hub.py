@@ -12,42 +12,19 @@ sh_logistic_hub=gc.open_by_key('1UYvnalxJyQBPdkds5X8v-bZF0Jz4xHXOlP7uwHD79E0')
 wks_logistic_hub=sh_logistic_hub.worksheet_by_title('logistic_hub')
 #jp_import
 sh_jp_inventory=gc.open_by_key('1GZ_lfj7XemTuXxGKMibKueo6wGfJ1wNv7oLMRP2BXTM')
-wks_jp_import=sh_jp_inventory.worksheet_by_title('jp_import')
+wks_jp_import=sh_jp_inventory.worksheet_by_title('3. Inventory')
 #%%
 while True:
     print("Đang lấy dữ liệu từ file jp_import")
     jp_import_df = wks_jp_import.get_as_df(has_header=True)
-    #Chỉ lấy dữ liệu khi bên nguồn đã được điền full
-    cond1 = (~(jp_import_df['tracking_id'] == "")
-             & ~(jp_import_df['product_id'] == "")
-             & ~(jp_import_df['product_name'] == "")
-             & ~(jp_import_df['product_image_link'] == "")
-             & ~(jp_import_df['jp_product_image_link'] == "")
-             & ~(jp_import_df['jp_date_received'] == "")
-             & ~(jp_import_df['transport'] == "")
-             & ~(jp_import_df['date'] == "")
-             & ~(jp_import_df['phone_number'] == "")
-             & ~(jp_import_df['genkin_weight'] == "")
-             & ~(jp_import_df['jp_cod'] == "")
-             & ~(jp_import_df['exchange_rate'] == "")
-             & ~(jp_import_df['purchase_fee'] == "")
-             & ~(jp_import_df['jp_received_confirm'] == "FALSE")
-             & ~(jp_import_df['product_link'] == ""))
-
     existed_product_id = wks_logistic_hub.get_as_df(has_header=False)[2]
-    cond2=(~jp_import_df['product_id'].isin(existed_product_id))
-    true_logistic_data = jp_import_df.loc[(cond1)&(cond2)].copy()
+    cond1=(~jp_import_df['product_id'].isin(existed_product_id))
+    true_logistic_data = jp_import_df.loc[(cond1)].copy()
     true_row=true_logistic_data.shape[0]
 
     if true_row == 0:
         print('Không có dữ liệu nào mới')
         continue
-    else:
-        print("Chờ 5s trong trường hợp tích nhầm")
-        time.sleep(5)
-        jp_import_df = wks_jp_import.get_as_df(has_header=True)
-        true_logistic_data = jp_import_df.loc[cond1 & cond2].copy()
-
     print("Đã lấy được dữ liệu từ jp_import")
     #get last row
     wks_jp_import_last_row_i = []

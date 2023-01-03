@@ -10,17 +10,14 @@ sh_logistic_hub=gc.open_by_key('1UYvnalxJyQBPdkds5X8v-bZF0Jz4xHXOlP7uwHD79E0')
 wks_logistic_hub=sh_logistic_hub.worksheet_by_title('logistic_hub')
 #jp_inventory - jp_export
 sh_jp_inventory=gc.open_by_key('1GZ_lfj7XemTuXxGKMibKueo6wGfJ1wNv7oLMRP2BXTM')
-wks_jp_export=sh_jp_inventory.worksheet_by_title('jp_export')
+wks_jp_export=sh_jp_inventory.worksheet_by_title('4. Export')
 
 #%% Tự động cập nhật dữ liệu
 while True:
     print("Đang cập nhật jp_export")
     # lấy dữ liệu ở jp_export
     jp_export_df=wks_jp_export.get_as_df(has_header=True)
-
-    cond1 = (~(jp_export_df['tracking_id'] == "")
-             & ~(jp_export_df['product_id'] == "")
-             & ~(jp_export_df['package_id'] == "")
+    cond1 = (~(jp_export_df['package_id'] == "")
              & ~(jp_export_df['lot_id'] == "")
              & ~(jp_export_df['partner_id'] == "")
              & ~(jp_export_df['jp_date_export'] == "")
@@ -33,6 +30,8 @@ while True:
         print("Chưa có dữ liệu từ jp_export")
         continue
     else:
+        time.sleep(5)
+        print("chờ 5s trong trường hợp tích nhầm")
         #Lấy những cột cần thiết ở jp_export
         jp_export_df = wks_jp_export.get_as_df(has_header=True)
         true_logistic_data = jp_export_df.loc[(cond1)].copy()

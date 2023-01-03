@@ -31,6 +31,8 @@ while True:
         print("Chưa có dữ liệu mới từ vn_import để cập nhật")
         continue
     else:
+        time.sleep(5)
+        print("chờ 5s trong trường hợp tích nhầm")
         vn_import_df = wks_vn_import.get_as_df(has_header=True)
         # Lấy những cột cần lấy
         true_logistic_data = vn_import_df.loc[(cond1)].copy()
