@@ -15,7 +15,6 @@ wks_partner_export=sh_partner_inventory.worksheet_by_title('4. Partner Export')
 #jp_export
 sh_jp_inventory=gc.open_by_key('1GZ_lfj7XemTuXxGKMibKueo6wGfJ1wNv7oLMRP2BXTM')
 wks_jp_export=sh_jp_inventory.worksheet_by_title('4. Export')
-
 #%%
 while True:
     # Đếm tổng số dòng hiện có trong sheet export
@@ -35,7 +34,8 @@ while True:
              & ~(jp_export_df['lot_id'] == "")
              & ~(jp_export_df['partner_id'] == "")
              & ~(jp_export_df['jp_date_export'] == "")
-             & ~(jp_export_df['jp_export_confirm'] == "FALSE"))
+             & (jp_export_df['transport'] == "Air KKI")
+             & (jp_export_df['jp_export_confirm'] == "TRUE"))
     true_partner_data = jp_export_df.loc[(cond1) & (cond2) & (cond3) & (cond4)].copy()
     true_row = true_partner_data.shape[0]
     print("Đã lấy được dữ liệu từ jp_import")
