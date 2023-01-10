@@ -65,13 +65,13 @@ while True:
     for i in image_link:
         x = f'=IMAGE("{i}")'
         product_image.append(x)
-    #Thay đổi vị trí cột và thêm giá trị rỗng cho những cột không có trong file gốc
+    #Thay đổi vị trí cột vàthêm giá trị rỗng cho những cột không có trong file gốc và
     empty_lst = [""] * true_row        #Lấy giá trị rỗng với số hàng từ dữ liệu được đổ về(partner_import)
     need_column = [x for x in wks_partner_import.get_row(1) if x not in wks_jp_export.get_row(1)]  #Lấy những cột từ file được đổ(partner_import) mà không có trong file gốc
     for x in need_column:
         true_partner_data[f'{x}'] = empty_lst
-    true_partner_data['jp_product_image'] = product_image
-    true_partner_data = true_partner_data[wks_partner_import.get_row(1)]
+    true_partner_data['jp_product_image'] = product_image 
+    true_partner_data = true_partner_data[wks_partner_import.get_row(1)] #Dữ liệu cần đổ lấy cột của file partner_import
 
     #thực hiện ghi
     print("Chuẩn bị ghi")
